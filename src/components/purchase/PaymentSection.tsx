@@ -36,8 +36,6 @@ export default function PaymentSection({ channelId, packageId, onSuccess }: Prop
   const PAYPAL_PERCENTAGE_FEE = 0.0349; // 3.49%
   const PAYPAL_FIXED_FEE = 0.35; // €0.35
 
-  console.log('Paypal client ID:', paypalClientId);
-
   const calculateTotalWithFee = (baseAmount: number) => {
     return (baseAmount + PAYPAL_FIXED_FEE) / (1 - PAYPAL_PERCENTAGE_FEE);
   };
