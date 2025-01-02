@@ -128,6 +128,7 @@ export default function Booking() {
                 selectedDate={selectedDate}
                 selectedTime={selectedTime}
                 onSelect={handleDateTimeSelect}
+                onContinue={() => setStep(4)}
               />
             </div>
 

@@ -62,7 +62,7 @@ export default function DateSelector({
           <DayPicker
             mode="single"
             selected={selectedDate}
-            onSelect={(date) => onSelect(date, selectedTime)}
+            onSelect={(date) => date && onSelect(date, selectedTime)}
             disabled={{ 
               before: new Date(),
               after: maxDate 

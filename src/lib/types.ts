@@ -36,6 +36,18 @@ export interface Subscription {
   updated_at: string;
 }
 
+export interface Purchase {
+  id: string;
+  user_id: string;
+  package_id: string;
+  payment_id?: string;
+  payment_status: string;
+  amount_paid: number;
+  posts_remaining: number;
+  expires_at: string;
+  created_at: string;
+}
+
 export interface Package {
   id: string;
   channel_id: string;
@@ -46,18 +58,6 @@ export interface Package {
   savings: number | null;
   requires_subscription: boolean;
   created_at: string;
-}
-
-export interface Package {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  current_period_start: string;
-  current_period_end: string;
-  created_at: string;
-  updated_at: string;
-  package?: Package;
 }
 
 export interface ChannelBadge {
