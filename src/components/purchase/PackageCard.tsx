@@ -36,7 +36,7 @@ export default function PackageCard({ pkg, isSelected, onSelect, hasValidPeriod 
 
       <div className="mt-4">
         <p className="text-2xl font-bold text-gray-900">€{pkg.price}</p>
-        {pkg.savings > 0 && (
+        {pkg?.savings && pkg.savings > 0 && (
           <p className="text-sm text-green-600">Save €{pkg.savings}</p>
         )}
       </div>
