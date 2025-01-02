@@ -1,3 +1,5 @@
+export type BookingStep = 'channel' | 'package' | 'datetime' | 'product';
+
 export interface ChannelStats {
   member_count: number;
   avg_views_24h: number;
