@@ -23,3 +23,4 @@ buildings
 *.njsproj
 *.sln
 *.sw?
+supabase/.env
