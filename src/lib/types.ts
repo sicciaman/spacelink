@@ -1,3 +1,17 @@
+export interface Booking {
+  id: string;
+  user_id: string;
+  purchase_id: string;
+  channel_id: string;
+  booking_date: string;
+  status: string;
+  product_link: string;
+  coupon?: string;
+  start_price: number;
+  discount_price: number;
+  created_at: string;
+}
+
 export type BookingStep = 'channel' | 'package' | 'datetime' | 'product';
 
 export interface ChannelStats {

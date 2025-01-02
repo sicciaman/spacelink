@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { TIME_SLOTS, isSunday } from '../../lib/constants';
+import { Lock } from 'lucide-react';
+import { useEffect } from 'react';
 import { useOccupiedSlots } from '../../hooks/useOccupiedSlots';
 import { useSubscription } from '../../hooks/useSubscription';
+import { TIME_SLOTS, isSunday } from '../../lib/constants';
 import { combineDateTime, isSameDateTime } from '../../lib/utils/dateTime';
-import { getValidTimeSlots } from '../../lib/utils/timeSlots/validation';
 import { cn } from '../../lib/utils/styles';
-import { Lock } from 'lucide-react';
+import { getValidTimeSlots } from '../../lib/utils/timeSlots/validation';
 
 interface Props {
   channelId: string | null;

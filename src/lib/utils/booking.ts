@@ -1,4 +1,3 @@
-import { addHours } from 'date-fns';
 import type { Booking } from '../types';
 
 export function canCancelBooking(bookingDate: string): boolean {
