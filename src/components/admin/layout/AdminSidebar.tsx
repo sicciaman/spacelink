@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Calendar, Package, Users, Star } from 'lucide-react';
+import { LayoutDashboard, Calendar, Package, Users, Star, Clock } from 'lucide-react';
 import { cn } from '../../../lib/utils/styles';
 
 const navigation = [

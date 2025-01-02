@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
-import { isSunday, TIME_SLOTS } from '../../lib/constants';
+import { useState, useEffect } from 'react';
+import { TIME_SLOTS, isSunday } from '../../lib/constants';
 import { useOccupiedSlots } from '../../hooks/useOccupiedSlots';
 import { useSubscription } from '../../hooks/useSubscription';
 import { combineDateTime, isSameDateTime } from '../../lib/utils/dateTime';
-import { getValidTimeSlots } from '../../lib/utils/timeSlots';
+import { getValidTimeSlots } from '../../lib/utils/timeSlots/validation';
 import { cn } from '../../lib/utils/styles';
 import { Lock } from 'lucide-react';
 

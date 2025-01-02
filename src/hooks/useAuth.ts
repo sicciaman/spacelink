@@ -33,6 +33,7 @@ export function useAuth() {
   });
 
   useEffect(() => {
+    console.log('user effect');
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);

@@ -3,6 +3,7 @@ import { Globe, LogIn } from 'lucide-react';
 import Footer from './common/Footer';
 
 export default function LandingLayout({ children }: { children: React.ReactNode }) {
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="bg-white shadow-sm">
@@ -11,13 +12,15 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
             <Globe className="w-6 h-6 mr-2" />
             SpaceLink
           </Link>
-          <Link
-            to="/login"
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-          >
-            <LogIn className="w-4 h-4 mr-2" />
-            Sign In
-          </Link>
+          <div className="flex items-center space-x-4">
+            <Link
+              to="/login"
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+            >
+              <LogIn className="w-4 h-4 mr-2" />
+              Sign In
+            </Link>
+          </div>
         </nav>
       </header>
 

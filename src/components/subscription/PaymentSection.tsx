@@ -17,11 +17,11 @@ export default function PaymentSection({ onSuccess, onCancel }: Props) {
     try {
       setIsProcessing(true);
       // Simulate payment processing delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
       // Create subscription
       await subscribe.mutateAsync();
-      
+
       toast.success('Successfully subscribed to SpaceLink Prime!');
       onSuccess?.();
     } catch (error: any) {
@@ -40,14 +40,20 @@ export default function PaymentSection({ onSuccess, onCancel }: Props) {
         className="text-center"
       >
         <Shield className="mx-auto h-12 w-12 text-blue-600" />
-        <h2 className="mt-4 text-2xl font-bold text-gray-900">Complete Your Subscription</h2>
-        <p className="mt-2 text-gray-600">You're just one step away from unlocking all Prime features</p>
+        <h2 className="mt-4 text-2xl font-bold text-gray-900">
+          Complete Your Subscription
+        </h2>
+        <p className="mt-2 text-gray-600">
+          You're just one step away from unlocking all Prime features
+        </p>
       </motion.div>
 
       <div className="bg-gray-50 rounded-xl p-6 space-y-4">
         <div className="flex justify-between items-center pb-4 border-b border-gray-200">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">SpaceLink Prime</h3>
+            <h3 className="text-lg font-semibold text-gray-900">
+              SpaceLink Prime
+            </h3>
             <p className="text-sm text-gray-500">Monthly Subscription</p>
           </div>
           <div className="text-right">
@@ -109,8 +115,8 @@ export default function PaymentSection({ onSuccess, onCancel }: Props) {
 
         <div className="text-center">
           <p className="text-xs text-gray-500">
-            By subscribing, you agree to our terms and conditions.
-            Your subscription will automatically renew each month.
+            By subscribing, you agree to our terms and conditions. Your
+            subscription will automatically renew each month.
           </p>
         </div>
       </motion.div>

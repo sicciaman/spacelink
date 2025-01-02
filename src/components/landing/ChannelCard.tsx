@@ -1,4 +1,4 @@
-import { Check } from 'lucide-react';
+import { Check, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
 import type { PricingTier } from './types';
 
@@ -38,15 +38,20 @@ export default function ChannelCard({ channel, index }: ChannelCardProps) {
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.2 + idx * 0.1 }}
-            className="flex items-center gap-x-2 text-sm leading-6 text-gray-600"
+            className="flex items-center gap-x-2"
           >
-            <Check className="h-5 w-5 flex-none text-blue-600" />
-            <span>
-              <strong>{bundle.posts} posts</strong> bundle for <strong>€{bundle.price}</strong>{' '}
-              <span className="text-green-600">(save €{bundle.savings})</span>
-            </span>
+            <div className="flex items-center gap-2">
+              <Star className="h-5 w-5 text-yellow-400" />
+              <span className="text-sm text-gray-900">
+                <strong>{bundle.posts} posts</strong> bundle for <strong>€{bundle.price}</strong>{' '}
+                <span className="text-green-600">(save €{bundle.savings})</span>
+              </span>
+            </div>
           </motion.div>
         ))}
+        <p className="text-xs text-gray-500 mt-2">
+          Prime subscription required for bundle pricing
+        </p>
       </div>
 
       <motion.a

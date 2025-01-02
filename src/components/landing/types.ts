@@ -9,3 +9,17 @@ export interface PricingTier {
     savings: number;
   }[];
 }
+
+export interface StatsMetric {
+  name: string;
+  value: string;
+  icon: any;
+  description: string;
+}
+
+export interface PrimeFeature {
+  title: string;
+  description: string;
+  standard: string;
+  prime: string;
+}

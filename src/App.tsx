@@ -9,6 +9,10 @@ import Dashboard from './pages/Dashboard';
 import Purchase from './pages/Purchase';
 import BookSlot from './pages/BookSlot';
 import Login from './pages/Login';
+import Profile from './pages/Profile';
+import Legal from './pages/Legal';
+import Help from './pages/Help';
+import Network from './pages/Network';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminDashboard from './pages/admin/Dashboard';
 import AdminOverview from './pages/admin/Overview';
@@ -16,6 +20,7 @@ import AdminBookings from './pages/admin/Bookings';
 import AdminPurchases from './pages/admin/Purchases';
 import AdminSubscriptions from './pages/admin/Subscriptions';
 import AdminCustomers from './pages/admin/Customers';
+import AuthRedirect from './components/AuthRedirect';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,7 +33,7 @@ const queryClient = new QueryClient({
 });
 
 const paypalConfig = {
-  "client-id": import.meta.env.VITE_PAYPAL_CLIENT_ID,
+  clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID,
   currency: "EUR",
   intent: "capture"
 };
@@ -47,13 +52,19 @@ export default function App() {
             } />
             <Route path="/login" element={<Login />} />
 
+            {/* Auth redirect */}
+            <Route path="/" element={<AuthRedirect />} />
+
             {/* Protected routes */}
             <Route element={<ProtectedRoute />}>
               {/* Customer routes with main layout */}
               <Route element={<Layout />}>
-                <Route index element={<Dashboard />} />
-                <Route path="purchase" element={<Purchase />} />
-                <Route path="book/:purchaseId" element={<BookSlot />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/network" element={<Network />} />
+                <Route path="/purchase" element={<Purchase />} />
+                <Route path="/book/:purchaseId" element={<BookSlot />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/help" element={<Help />} />
               </Route>
 
               {/* Admin routes */}
@@ -67,7 +78,7 @@ export default function App() {
             </Route>
 
             {/* Catch all */}
-            <Route path="*" element={<Navigate to="/login" replace />} />
+            <Route path="*" element={<Navigate to="/landing" replace />} />
           </Routes>
           <Toaster position="top-right" />
         </Router>
