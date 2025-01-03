@@ -5,11 +5,12 @@ import toast from 'react-hot-toast';
 import { useAuth } from '../../hooks/useAuth';
 import { usePackages } from '../../hooks/usePackages';
 import { supabase } from '../../lib/supabase';
+import { Purchase } from '../../lib/types';
 
 interface Props {
   channelId: string;
   packageId: string;
-  onSuccess: (data: any) => void;
+  onSuccess: (data: Purchase) => void;
 }
 
 export default function PaymentSection({ channelId, packageId, onSuccess }: Props) {
@@ -63,7 +64,7 @@ export default function PaymentSection({ channelId, packageId, onSuccess }: Prop
 
       if (error) throw error;
       toast.success('Payment completed successfully!', purchase);
-      onSuccess(details);
+      onSuccess(purchase);
     } catch (error) {
       console.error('Error processing payment:', error);
       toast.error('Payment could not be completed. Please contact support.');

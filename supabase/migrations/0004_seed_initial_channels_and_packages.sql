@@ -27,6 +27,10 @@ INSERT INTO packages (channel_id, name, post_count, price, savings, requires_sub
   ((SELECT id FROM channels WHERE name = 'CosmoTech'), 'Single Post', 1, 15.00, 0, false),
   ((SELECT id FROM channels WHERE name = 'CosmoTech'), '3 Posts Bundle', 3, 33.00, 12.00, true),
   ((SELECT id FROM channels WHERE name = 'CosmoTech'), '5 Posts Bundle', 5, 54.00, 21.00, true),
+
+  ((SELECT id FROM channels WHERE name = 'Abbigliamento Spaziale'), 'Single Post', 1, 15.00, 0, false),
+  ((SELECT id FROM channels WHERE name = 'Abbigliamento Spaziale'), '3 Posts Bundle', 3, 33.00, 12.00, true),
+  ((SELECT id FROM channels WHERE name = 'Abbigliamento Spaziale'), '5 Posts Bundle', 5, 54.00, 21.00, true),
   
   ((SELECT id FROM channels WHERE name = 'AstroHouse'), 'Single Post', 1, 10.00, 0, false),
   ((SELECT id FROM channels WHERE name = 'AstroHouse'), '3 Posts Bundle', 3, 22.00, 8.00, true),

@@ -1,3 +1,8 @@
+create extension pg_cron with schema pg_catalog;
+
+grant usage on schema cron to postgres;
+grant all privileges on all tables in schema cron to postgres;
+
 -- Create function to handle expirations
 CREATE OR REPLACE FUNCTION handle_expirations()
 RETURNS void
@@ -98,4 +103,4 @@ SELECT cron.schedule(
 );
 
 -- Grant necessary permissions
-GRANT EXECUTE ON FUNCTION handle_expirations TO postgres;
+GRANT EXECUTE ON FUNCTION handle_expirations TO authenticated;
