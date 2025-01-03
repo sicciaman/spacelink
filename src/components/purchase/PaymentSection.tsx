@@ -1,10 +1,10 @@
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
-import { Loader2, Package, CreditCard, Shield } from 'lucide-react';
+import { addDays } from 'date-fns';
+import { CreditCard, Loader2, Package, Shield } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useAuth } from '../../hooks/useAuth';
 import { usePackages } from '../../hooks/usePackages';
 import { supabase } from '../../lib/supabase';
-import { useAuth } from '../../hooks/useAuth';
-import { addDays } from 'date-fns';
 
 interface Props {
   channelId: string;
@@ -32,7 +32,6 @@ export default function PaymentSection({ channelId, packageId, onSuccess }: Prop
   if (!selectedPackage || !channelId || !user) return null;
 
   // PayPal fee calculation
-  const paypalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID;
   const PAYPAL_PERCENTAGE_FEE = 0.0349; // 3.49%
   const PAYPAL_FIXED_FEE = 0.35; // €0.35
 
@@ -141,13 +140,12 @@ export default function PaymentSection({ channelId, packageId, onSuccess }: Prop
 
           {/* PayPal Button */}
           <div className="mb-6">
-            <PayPalScriptProvider
-              options={{
-                clientId: paypalClientId,
-                currency: 'EUR',
-                intent: 'capture',
-              }}
-            >
+            <PayPalScriptProvider options={{ 
+                  clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID ,
+                  currency: 'EUR',
+                  intent: 'capture',
+                  vault: true
+                }}>
               <PayPalButtons
                 style={{
                   layout: 'vertical',

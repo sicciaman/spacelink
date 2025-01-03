@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 import { motion } from 'framer-motion';
-import { Shield, CreditCard, Calendar, CheckCircle } from 'lucide-react';
-import { useSubscription } from '../../hooks/useSubscription';
+import { Calendar, CheckCircle, CreditCard, Shield } from 'lucide-react';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useSubscription } from '../../hooks/useSubscription';
 
 interface Props {
-  onSuccess?: () => void;
+  onSuccess: (data: any) => void;
   onCancel?: () => void;
 }
 
@@ -13,24 +14,29 @@ export default function PaymentSection({ onSuccess, onCancel }: Props) {
   const { subscribe } = useSubscription();
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const handleMockPayment = async () => {
-    try {
-      setIsProcessing(true);
-      // Simulate payment processing delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+    // Handle payment approval
+    const onApprove = async (data: any, actions: any) => {
+      try {
+        const details = await actions.order.capture();
 
-      // Create subscription
-      await subscribe.mutateAsync();
+        console.log('Subscription payment details:', details);
+  
+        // Create subscription
+        await subscribe.mutateAsync();
 
-      toast.success('Successfully subscribed to SpaceLink Prime!');
-      onSuccess?.();
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to process payment');
-      onCancel?.();
-    } finally {
-      setIsProcessing(false);
-    }
-  };
+        toast.success('Successfully subscribed to SpaceLink Prime!');
+        onSuccess(details);
+      } catch (error) {
+        console.error('Error processing payment:', error);
+        toast.error('Payment could not be completed. Please contact support.');
+      }
+    };
+  
+    // Handle PayPal errors
+    const onError = (err: any) => {
+      console.error('PayPal error:', err);
+      toast.error('Payment failed. Please try again or choose another method.');
+    };
 
   return (
     <div className="space-y-8">
@@ -84,26 +90,30 @@ export default function PaymentSection({ onSuccess, onCancel }: Props) {
         transition={{ delay: 0.2 }}
         className="space-y-4"
       >
-        <button
-          onClick={handleMockPayment}
-          disabled={isProcessing}
-          className="w-full relative bg-[#FFC439] hover:bg-[#F4BB33] text-[#253B80] font-bold py-4 px-6 rounded-lg transition-all duration-200 disabled:opacity-75"
-        >
-          <div className="flex items-center justify-center">
-            {isProcessing ? (
-              <>
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-[#253B80] mr-3" />
-                Processing...
-              </>
-            ) : (
-              <>
-                <span>Pay with</span>
-                <span className="font-black mx-1">Pay</span>
-                <span className="text-[#179BD7] font-black">Pal</span>
-              </>
-            )}
+          {/* PayPal Button */}
+          <div className="mb-6">
+            <PayPalScriptProvider options={{ 
+                clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID ,
+                currency: 'EUR',
+                intent: 'subscription',
+                vault: true
+              }}>
+              <PayPalButtons
+                style={{
+                  layout: 'vertical',
+                  shape: 'rect',
+                  label: 'pay',
+                }}
+                createSubscription={async (data, actions) => {
+                  return actions.subscription.create({
+                    plan_id: import.meta.env.VITE_SPACELINK_PRIME_PLAN_ID,
+                  });
+                }}
+                onApprove={onApprove}
+                onError={onError}
+              />
+            </PayPalScriptProvider>
           </div>
-        </button>
 
         <button
           onClick={onCancel}

@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 import { Toaster } from 'react-hot-toast';
 import Layout from './components/Layout';
 import LandingLayout from './components/LandingLayout';
@@ -10,7 +9,6 @@ import Purchase from './pages/Purchase';
 import BookSlot from './pages/BookSlot';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
-import Legal from './pages/Legal';
 import Help from './pages/Help';
 import Network from './pages/Network';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -32,57 +30,49 @@ const queryClient = new QueryClient({
   }
 });
 
-const paypalConfig = {
-  clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID,
-  currency: "EUR",
-  intent: "capture"
-};
-
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <PayPalScriptProvider options={paypalConfig}>
-        <Router>
-          <Routes>
-            {/* Public routes */}
-            <Route path="/landing" element={
-              <LandingLayout>
-                <Landing />
-              </LandingLayout>
-            } />
-            <Route path="/login" element={<Login />} />
+      <Router>
+        <Routes>
+          {/* Public routes */}
+          <Route path="/landing" element={
+            <LandingLayout>
+              <Landing />
+            </LandingLayout>
+          } />
+          <Route path="/login" element={<Login />} />
 
-            {/* Auth redirect */}
-            <Route path="/" element={<AuthRedirect />} />
+          {/* Auth redirect */}
+          <Route path="/" element={<AuthRedirect />} />
 
-            {/* Protected routes */}
-            <Route element={<ProtectedRoute />}>
-              {/* Customer routes with main layout */}
-              <Route element={<Layout />}>
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/network" element={<Network />} />
-                <Route path="/purchase" element={<Purchase />} />
-                <Route path="/book/:purchaseId" element={<BookSlot />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/help" element={<Help />} />
-              </Route>
-
-              {/* Admin routes */}
-              <Route path="admin" element={<AdminDashboard />}>
-                <Route index element={<AdminOverview />} />
-                <Route path="bookings" element={<AdminBookings />} />
-                <Route path="purchases" element={<AdminPurchases />} />
-                <Route path="subscriptions" element={<AdminSubscriptions />} />
-                <Route path="customers" element={<AdminCustomers />} />
-              </Route>
+          {/* Protected routes */}
+          <Route element={<ProtectedRoute />}>
+            {/* Customer routes with main layout */}
+            <Route element={<Layout />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/network" element={<Network />} />
+              <Route path="/purchase" element={<Purchase />} />
+              <Route path="/book/:purchaseId" element={<BookSlot />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/help" element={<Help />} />
             </Route>
 
-            {/* Catch all */}
-            <Route path="*" element={<Navigate to="/landing" replace />} />
-          </Routes>
-          <Toaster position="top-right" />
-        </Router>
-      </PayPalScriptProvider>
+            {/* Admin routes */}
+            <Route path="admin" element={<AdminDashboard />}>
+              <Route index element={<AdminOverview />} />
+              <Route path="bookings" element={<AdminBookings />} />
+              <Route path="purchases" element={<AdminPurchases />} />
+              <Route path="subscriptions" element={<AdminSubscriptions />} />
+              <Route path="customers" element={<AdminCustomers />} />
+            </Route>
+          </Route>
+
+          {/* Catch all */}
+          <Route path="*" element={<Navigate to="/landing" replace />} />
+        </Routes>
+        <Toaster position="top-right" />
+      </Router>
     </QueryClientProvider>
   );
 }
