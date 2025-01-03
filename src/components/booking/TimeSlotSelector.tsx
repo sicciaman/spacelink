@@ -21,7 +21,7 @@ export default function TimeSlotSelector({
   onSelect 
 }: Props) {
   const { data: occupiedSlots = [], isLoading } = useOccupiedSlots(channelId, selectedDate);
-  const { hasValidPeriod } = useSubscription();
+  const { isSubscribed } = useSubscription();
 
   const baseTimeSlots = selectedDate ? 
     (isSunday(selectedDate) ? TIME_SLOTS.sunday : TIME_SLOTS.weekday) : 
@@ -41,19 +41,19 @@ export default function TimeSlotSelector({
 
   // Use useEffect to handle auto-selection for non-Prime users
   useEffect(() => {
-    if (!hasValidPeriod && !selectedTime && selectedDate) {
+    if (!isSubscribed && !selectedTime && selectedDate) {
       const firstAvailable = getFirstAvailableSlot();
       if (firstAvailable) {
         onSelect(firstAvailable);
       }
     }
-  }, [hasValidPeriod, selectedTime, selectedDate, validTimeSlots.join(',')]);
+  }, [isSubscribed, selectedTime, selectedDate, validTimeSlots.join(',')]);
 
   if (!selectedDate) return null;
 
   const getTimeSlotClasses = (time: string, isOccupied: boolean, isPast: boolean) => {
-    const isAutoSelected = !hasValidPeriod && selectedTime === time;
-    const isDisabled = !hasValidPeriod || isOccupied || isPast;
+    const isAutoSelected = !isSubscribed && selectedTime === time;
+    const isDisabled = !isSubscribed || isOccupied || isPast;
 
     return cn(
       'relative px-4 py-2.5 text-sm rounded-md border transition-all duration-200',
@@ -79,18 +79,18 @@ export default function TimeSlotSelector({
         {baseTimeSlots.map((time) => {
           const isOccupied = isTimeSlotOccupied(time);
           const isPast = !validTimeSlots.includes(time);
-          const isSelectable = hasValidPeriod && !isOccupied && !isPast;
-          const isAutoSelected = !hasValidPeriod && selectedTime === time;
+          const isSelectable = isSubscribed && !isOccupied && !isPast;
+          const isAutoSelected = !isSubscribed && selectedTime === time;
 
           return (
             <button
               key={time}
               onClick={() => isSelectable && onSelect(time)}
-              disabled={!isSelectable || (!hasValidPeriod && selectedTime !== time)}
+              disabled={!isSelectable || (!isSubscribed && selectedTime !== time)}
               className={getTimeSlotClasses(time, isOccupied, isPast)}
             >
               {time}
-              {!hasValidPeriod && !selectedTime && !isOccupied && !isPast && (
+              {!isSubscribed && !selectedTime && !isOccupied && !isPast && (
                 <div className="absolute top-1 right-1">
                   <Lock className="h-3 w-3 text-gray-400" />
                 </div>

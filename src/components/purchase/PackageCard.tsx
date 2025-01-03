@@ -7,11 +7,11 @@ interface Props {
   pkg: Package;
   isSelected: boolean;
   onSelect: (packageId: string) => void;
-  hasValidPeriod: boolean;
+  isSubscribed: boolean;
 }
 
-export default function PackageCard({ pkg, isSelected, onSelect, hasValidPeriod }: Props) {
-  const isLocked = pkg.requires_subscription && !hasValidPeriod;
+export default function PackageCard({ pkg, isSelected, onSelect, isSubscribed }: Props) {
+  const isLocked = pkg.requires_subscription && !isSubscribed;
 
   return (
     <motion.div

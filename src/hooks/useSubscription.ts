@@ -65,7 +65,6 @@ export function useSubscription() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['subscription'] });
-      toast.success('Subscription cancelled successfully');
     },
     onError: (error: any) => {
       toast.error(error.message || 'Failed to cancel subscription');
@@ -87,7 +86,6 @@ export function useSubscription() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['subscription'] });
-      toast.success('Subscription reactivated successfully');
     },
     onError: (error: any) => {
       toast.error(error.message || 'Failed to reactivate subscription');
@@ -95,20 +93,15 @@ export function useSubscription() {
   });
 
   // Check if subscription is active
-  const isSubscribed = subscription?.status === 'active';
-
-  // Check if subscription period is still valid (even if cancelled)
-  const hasValidPeriod =
-    subscription && new Date(subscription.current_period_end) > new Date();
+  const isSubscribed = subscription && ['active', 'cancelled'].includes(subscription.status);
 
   // Check if subscription is cancelled but still valid
-  const isCancelledButValid =
-    subscription?.status === 'cancelled' && hasValidPeriod;
+  const isCancelled =
+    subscription?.status === 'cancelled';
 
   // Get max booking days based on subscription status
   const getMaxBookingDays = () => {
     if (!subscription) return 2; // No subscription
-    if (!hasValidPeriod) return 2; // Expired subscription
     return 30; // Valid subscription (active or cancelled)
   };
 
@@ -116,8 +109,7 @@ export function useSubscription() {
     subscription,
     isLoading,
     isSubscribed,
-    hasValidPeriod,
-    isCancelledButValid,
+    isCancelled,
     getMaxBookingDays,
     subscribe,
     cancelSubscription,

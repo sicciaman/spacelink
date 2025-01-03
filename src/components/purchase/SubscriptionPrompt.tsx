@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 
 export default function SubscriptionPrompt() {
   const [showModal, setShowModal] = useState(false);
-  const { subscription, reactivateSubscription, isSubscribed, isCancelledButValid } = useSubscription();
+  const { subscription, reactivateSubscription, isSubscribed, isCancelled } = useSubscription();
 
   // Hide prompt if subscription is active
   if (isSubscribed) return null;
@@ -32,7 +32,7 @@ export default function SubscriptionPrompt() {
           <Star className="h-8 w-8 text-yellow-400" />
         </div>
         <div>
-          {isCancelledButValid ? (
+          {isCancelled ? (
             <>
               <h3 className="text-lg font-semibold text-gray-900">
                 Reactivate Your Prime Subscription

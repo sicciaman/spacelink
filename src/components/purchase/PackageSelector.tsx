@@ -12,16 +12,16 @@ interface Props {
 
 export default function PackageSelector({ channelId, selectedPackage, onSelect }: Props) {
   const { data: packages, isLoading } = usePackages(channelId);
-  const { isSubscribed, hasValidPeriod, isCancelledButValid } = usePackageAccess();
+  const { isSubscribed, isCancelled } = usePackageAccess();
 
   if (isLoading) {
     return <div>Loading packages...</div>;
   }
 
   // Show subscription prompt if:
-  // 1. User has no active subscription AND no valid period, OR
+  // 1. User has no active subscription OR
   // 2. User has a cancelled subscription that's still valid
-  const showSubscriptionPrompt = (!isSubscribed && !hasValidPeriod) || isCancelledButValid;
+  const showSubscriptionPrompt = (!isSubscribed) || isCancelled;
 
   return (
     <section>
@@ -36,7 +36,7 @@ export default function PackageSelector({ channelId, selectedPackage, onSelect }
             pkg={pkg}
             isSelected={selectedPackage === pkg.id}
             onSelect={onSelect}
-            hasValidPeriod={!!hasValidPeriod}
+            isSubscribed={!!isSubscribed}
           />
         ))}
       </div>
