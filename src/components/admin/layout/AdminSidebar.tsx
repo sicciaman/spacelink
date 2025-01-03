@@ -1,13 +1,15 @@
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Calendar, Package, Users, Star, Clock } from 'lucide-react';
+import { LayoutDashboard, Calendar, Package, Users, Star, Settings, Radio } from 'lucide-react';
 import { cn } from '../../../lib/utils/styles';
 
 const navigation = [
   { name: 'Overview', href: '/admin', icon: LayoutDashboard },
+  { name: 'My Network', href: '/admin/network', icon: Radio },
   { name: 'Bookings', href: '/admin/bookings', icon: Calendar },
   { name: 'Purchases', href: '/admin/purchases', icon: Package },
   { name: 'Subscriptions', href: '/admin/subscriptions', icon: Star },
   { name: 'Customers', href: '/admin/customers', icon: Users },
+  { name: 'Settings', href: '/admin/settings', icon: Settings },
 ];
 
 interface Props {

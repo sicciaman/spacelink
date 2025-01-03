@@ -18,6 +18,8 @@ import AdminBookings from './pages/admin/Bookings';
 import AdminPurchases from './pages/admin/Purchases';
 import AdminSubscriptions from './pages/admin/Subscriptions';
 import AdminCustomers from './pages/admin/Customers';
+import AdminSettings from './pages/admin/Settings';
+import AdminNetwork from './pages/admin/Network';
 import AuthRedirect from './components/AuthRedirect';
 
 const queryClient = new QueryClient({
@@ -61,10 +63,12 @@ export default function App() {
             {/* Admin routes */}
             <Route path="admin" element={<AdminDashboard />}>
               <Route index element={<AdminOverview />} />
+              <Route path="network" element={<AdminNetwork />} />
               <Route path="bookings" element={<AdminBookings />} />
               <Route path="purchases" element={<AdminPurchases />} />
               <Route path="subscriptions" element={<AdminSubscriptions />} />
               <Route path="customers" element={<AdminCustomers />} />
+              <Route path="settings" element={<AdminSettings />} />
             </Route>
           </Route>
 

@@ -22,7 +22,7 @@ export default function DateSelector({
   onSelect,
   onContinue
 }: Props) {
-  const { hasValidPeriod, getMaxBookingDays } = useSubscription();
+  const { isSubscribed, getMaxBookingDays } = useSubscription();
   const [showPrimeModal, setShowPrimeModal] = useState(false);
   
   // Get max booking days based on subscription status
@@ -36,7 +36,7 @@ export default function DateSelector({
 
   return (
     <section>
-      {!hasValidPeriod && (
+      {!isSubscribed && (
         <div className="mb-6 bg-gradient-to-r from-amber-50 to-yellow-50 border border-yellow-200 rounded-lg p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <div className="flex items-center">

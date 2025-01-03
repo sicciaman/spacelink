@@ -1,11 +1,10 @@
 import { Lock } from 'lucide-react';
 import { useEffect } from 'react';
-import { useOccupiedSlots } from '../../hooks/useOccupiedSlots';
 import { useSubscription } from '../../hooks/useSubscription';
 import { TIME_SLOTS, isSunday } from '../../lib/constants';
-import { combineDateTime, isSameDateTime } from '../../lib/utils/dateTime';
 import { cn } from '../../lib/utils/styles';
 import { getValidTimeSlots } from '../../lib/utils/timeSlots/validation';
+import { useSlotAvailability } from '../../hooks/useSlotAvailability';
 
 interface Props {
   channelId: string | null;
@@ -20,40 +19,34 @@ export default function TimeSlotSelector({
   selectedTime, 
   onSelect 
 }: Props) {
-  const { data: occupiedSlots = [], isLoading } = useOccupiedSlots(channelId, selectedDate);
-  const { hasValidPeriod } = useSubscription();
+  const { isSubscribed } = useSubscription();
+  const { isSlotAvailable, isLoading } = useSlotAvailability(channelId, selectedDate);
 
   const baseTimeSlots = selectedDate ? 
     (isSunday(selectedDate) ? TIME_SLOTS.sunday : TIME_SLOTS.weekday) : 
     [];
   const validTimeSlots = selectedDate ? getValidTimeSlots(baseTimeSlots, selectedDate) : [];
 
-  const isTimeSlotOccupied = (time: string) => {
-    if (!selectedDate) return false;
-    const dateTimeToCheck = combineDateTime(selectedDate, time);
-    return occupiedSlots.some(slot => isSameDateTime(dateTimeToCheck, slot));
-  };
-
   // For non-Prime users, automatically select the first available time slot
   const getFirstAvailableSlot = () => {
-    return validTimeSlots.find(time => !isTimeSlotOccupied(time));
+    return validTimeSlots.find(time => isSlotAvailable(time));
   };
 
   // Use useEffect to handle auto-selection for non-Prime users
   useEffect(() => {
-    if (!hasValidPeriod && !selectedTime && selectedDate && !isLoading) {
+    if (!isSubscribed && !selectedTime && selectedDate) {
       const firstAvailable = getFirstAvailableSlot();
       if (firstAvailable) {
         onSelect(firstAvailable);
       }
     }
-  }, [hasValidPeriod, selectedTime, selectedDate, isLoading, validTimeSlots.join(','), occupiedSlots]);
+  }, [isSubscribed, selectedTime, selectedDate, validTimeSlots.join(',')]);
 
-  if (!selectedDate) return null;
+  if (!selectedDate || isLoading) return null;
 
-  const getTimeSlotClasses = (time: string, isOccupied: boolean, isPast: boolean) => {
-    const isAutoSelected = !hasValidPeriod && selectedTime === time;
-    const isDisabled = !hasValidPeriod || isOccupied || isPast;
+  const getTimeSlotClasses = (time: string, isAvailable: boolean, isPast: boolean) => {
+    const isAutoSelected = !isSubscribed && selectedTime === time;
+    const isDisabled = !isSubscribed || !isAvailable || isPast;
 
     return cn(
       'relative px-4 py-2.5 text-sm rounded-md border transition-all duration-200',
@@ -65,7 +58,7 @@ export default function TimeSlotSelector({
   };
 
   // Check if there are any available slots
-  const hasAvailableSlots = validTimeSlots.some(time => !isTimeSlotOccupied(time));
+  const hasAvailableSlots = validTimeSlots.some(time => isSlotAvailable(time));
 
   return (
     <div className="mt-6">
@@ -77,20 +70,20 @@ export default function TimeSlotSelector({
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         {baseTimeSlots.map((time) => {
-          const isOccupied = isTimeSlotOccupied(time);
+          const isAvailable = isSlotAvailable(time);
           const isPast = !validTimeSlots.includes(time);
-          const isSelectable = hasValidPeriod && !isOccupied && !isPast;
-          const isAutoSelected = !hasValidPeriod && selectedTime === time;
+          const isSelectable = isSubscribed && isAvailable && !isPast;
+          const isAutoSelected = !isSubscribed && selectedTime === time;
 
           return (
             <button
               key={time}
               onClick={() => isSelectable && onSelect(time)}
-              disabled={!isSelectable || (!hasValidPeriod && selectedTime !== time)}
-              className={getTimeSlotClasses(time, isOccupied, isPast)}
+              disabled={!isSelectable || (!isSubscribed && selectedTime !== time)}
+              className={getTimeSlotClasses(time, isAvailable, isPast)}
             >
               {time}
-              {!hasValidPeriod && !selectedTime && !isOccupied && !isPast && (
+              {!isSubscribed && !selectedTime && isAvailable && !isPast && (
                 <div className="absolute top-1 right-1">
                   <Lock className="h-3 w-3 text-gray-400" />
                 </div>
