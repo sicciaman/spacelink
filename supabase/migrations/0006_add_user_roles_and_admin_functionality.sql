@@ -15,7 +15,7 @@
 -- Create user roles table
 CREATE TABLE user_roles (
   user_id UUID REFERENCES auth.users(id) PRIMARY KEY,
-  role TEXT NOT NULL CHECK (role IN ('admin', 'customer')),
+  role TEXT NOT NULL CHECK (role IN ('admin', 'customer', 'creator')),
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
