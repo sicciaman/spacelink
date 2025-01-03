@@ -36,7 +36,7 @@ export default function PackageSelector({ channelId, selectedPackage, onSelect }
             pkg={pkg}
             isSelected={selectedPackage === pkg.id}
             onSelect={onSelect}
-            hasValidPeriod={hasValidPeriod}
+            hasValidPeriod={!!hasValidPeriod}
           />
         ))}
       </div>
