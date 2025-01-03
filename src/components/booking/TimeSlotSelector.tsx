@@ -41,13 +41,13 @@ export default function TimeSlotSelector({
 
   // Use useEffect to handle auto-selection for non-Prime users
   useEffect(() => {
-    if (!hasValidPeriod && !selectedTime && selectedDate) {
+    if (!hasValidPeriod && !selectedTime && selectedDate && !isLoading) {
       const firstAvailable = getFirstAvailableSlot();
       if (firstAvailable) {
         onSelect(firstAvailable);
       }
     }
-  }, [hasValidPeriod, selectedTime, selectedDate, validTimeSlots.join(',')]);
+  }, [hasValidPeriod, selectedTime, selectedDate, isLoading, validTimeSlots.join(','), occupiedSlots]);
 
   if (!selectedDate) return null;
 
