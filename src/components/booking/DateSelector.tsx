@@ -1,11 +1,11 @@
-import { DayPicker } from 'react-day-picker';
 import { addDays } from 'date-fns';
-import TimeSlotSelector from './TimeSlotSelector';
-import { useSubscription } from '../../hooks/useSubscription';
 import { Crown } from 'lucide-react';
-import PrimeModal from '../subscription/PrimeModal';
 import { useState } from 'react';
+import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
+import { useSubscription } from '../../hooks/useSubscription';
+import PrimeModal from '../subscription/PrimeModal';
+import TimeSlotSelector from './TimeSlotSelector';
 
 interface Props {
   channelId: string | null;
@@ -28,6 +28,11 @@ export default function DateSelector({
   // Get max booking days based on subscription status
   const maxDays = getMaxBookingDays();
   const maxDate = addDays(new Date(), maxDays);
+
+  // Reset time slot when date changes
+  const handleDateChange = (newDate: Date | null) => {
+    onSelect(newDate, null);
+  };
 
   return (
     <section>
@@ -62,7 +67,7 @@ export default function DateSelector({
           <DayPicker
             mode="single"
             selected={selectedDate}
-            onSelect={(date) => date && onSelect(date, selectedTime)}
+            onSelect={handleDateChange}
             disabled={{ 
               before: new Date(),
               after: maxDate 
@@ -83,6 +88,7 @@ export default function DateSelector({
             selectedDate={selectedDate}
             selectedTime={selectedTime}
             onSelect={(time) => onSelect(selectedDate, time)}
+            key={selectedDate?.toISOString()} // Force re-render when date changes
           />
           
           {selectedDate && selectedTime && (

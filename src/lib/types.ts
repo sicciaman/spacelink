@@ -4,13 +4,15 @@ export interface Booking {
   purchase_id: string;
   channel_id: string;
   booking_date: string;
-  status: string;
+  status: BookingStatus;
   product_link: string;
   coupon?: string;
   start_price: number;
   discount_price: number;
   created_at: string;
 }
+
+export type BookingStatus = 'pending' |'completed' | 'cancelled';
 
 export type BookingStep = 'channel' | 'package' | 'datetime' | 'product';
 

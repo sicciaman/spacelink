@@ -1,12 +1,11 @@
-import { useState } from 'react';
 import { format } from 'date-fns';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import type { Purchase, Package } from '../../lib/types';
-import { useBookings } from '../../hooks/useBookings';
-import { isPackageExpired, getDaysUntilExpiration } from '../../lib/utils/package';
-import PackageCardSkeleton from './PackageCardSkeleton';
-import EmptyPackages from './EmptyPackages';
 import { useChannels } from '../../hooks/useChannels';
+import type { Package, Purchase } from '../../lib/types';
+import { getDaysUntilExpiration, isPackageExpired } from '../../lib/utils/package';
+import EmptyPackages from './EmptyPackages';
+import PackageCardSkeleton from './PackageCardSkeleton';
 
 const ITEMS_PER_PAGE = 6;
 const SKELETON_COUNT = 3;
@@ -58,7 +57,7 @@ export default function PackageList({ packages, isLoading = false }: Props) {
                     {getChannelName(purchase.packages.channel_id)}
                   </p>
                 </div>
-                {isExpired ? (
+                {isExpired || purchase.posts_remaining === 0 ? (
                   <span className="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">
                     Expired
                   </span>
